@@ -68,27 +68,27 @@ searchButton.addEventListener('click', searchHandler)
 
 
 function changeBackground(weather) {
-    console.log('hello');
+    
     switch (weather) {
         case 'Clouds':
-            console.log(weather);
+            
             body.style.backgroundImage = "url(images/clouds1.png)";
             break;
         case 'Rain':
             body.style.backgroundImage = "url(images/rain1.png)";
-            console.log(weather);
+           
             break;
         case 'Clear':
             body.style.backgroundImage = "url(images/clear.png)";
-            console.log(weather);
+            
             break;
         case 'Snow':
             body.style.backgroundImage = "url(images/snow2.png)";
-            console.log(weather);
+            
             break;
         case 'Thunderstorm':
             body.style.backgroundImage = "url(images/thunder1.png)";
-            console.log(weather);
+           
             break;
     }
 }
@@ -99,7 +99,6 @@ body.style.backgroundImage = "url(images/forecast.png)"
 convertButton.addEventListener('click', () => {
     temp = weatherInfo.querySelector('.temp');
     let num = parseFloat(temp.innerText);
-    console.log(num);
     if (units === 'metric') {
         units = 'imperial';
         convertButton.innerText = '°F 🡪 °C';
