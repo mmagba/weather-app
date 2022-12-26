@@ -7,6 +7,9 @@ const searchBar = document.querySelector('input');
 const searchButton = document.querySelector('.search-button');
 const weatherInfo = document.querySelector('.weather-info');
 const body = document.querySelector('body');
+const convertButton = document.querySelector('.convert-button');
+
+let units = 'metric', unitSign = '°C';
 
 
 
@@ -15,12 +18,13 @@ getCurrentPositionButton.addEventListener('click', () => {
         latitude = posetion.coords.latitude;
         longitude = posetion.coords.longitude;
 
-        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`)
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`)
             .then(response => response.json())
             .then(data => {
+                convertButton.style.display='block';
                 weatherInfo.innerHTML = `
             <p>${data.name}</p>
-            <p>${data.main.temp}℃</p>
+            <p class='temp'>${data.main.temp}${unitSign}</p>
             <p>${data.weather[0].main}</p>
             `;
                 changeBackground(data.weather[0].main);
@@ -30,7 +34,7 @@ getCurrentPositionButton.addEventListener('click', () => {
 
 
 function getWeatherDataByCity(cityName) {
-    return fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`)
+    return fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=${units}`)
         .then(response => response.json())
         .then(data => {
             return {
@@ -45,21 +49,22 @@ function getWeatherDataByCity(cityName) {
         });
 }
 
-
-
-searchButton.addEventListener('click', () => {
+function searchHandler() {
     const cityName = searchBar.value;
     getWeatherDataByCity(cityName)
         .then(data => {
+            convertButton.style.display='block';
             weatherInfo.innerHTML = `
             <p>${data.location}</p>
-            <p>${data.temprature}℃</p>
+            <p class='temp'>${data.temprature}${unitSign}</p>
             <p>${data.description}</p>
             `;
             changeBackground(data.description);
 
-        });
-})
+        })
+}
+
+searchButton.addEventListener('click', searchHandler)
 
 
 function changeBackground(weather) {
@@ -89,5 +94,27 @@ function changeBackground(weather) {
 }
 
 body.style.backgroundImage = "url(images/forecast.png)"
+
+
+convertButton.addEventListener('click', () => {
+    temp = weatherInfo.querySelector('.temp');
+    let num = parseFloat(temp.innerText);
+    console.log(num);
+    if (units === 'metric') {
+        units = 'imperial';
+        convertButton.innerText = '°F 🡪 °C';
+        unitSign = '°F';
+        num = num * 9 / 5 + 32;
+
+    } else {
+        units = 'metric';
+        convertButton.innerText = '°C 🡪 °F';
+        unitSign = '°C';
+        num = (num - 32) * 5 / 9;
+    }
+    num = Math.round(num * 100) / 100;
+    temp.innerText = `${num}${unitSign}`
+
+})
 
 
