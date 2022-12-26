@@ -112,7 +112,7 @@ convertButton.addEventListener('click', () => {
         num = (num - 32) * 5 / 9;
     }
     num = Math.round(num * 100) / 100;
-    temp.innerText = `${num}${unitSign}`
+    temp.innerText = `${num}${unitSign}`;
 
 })
 
