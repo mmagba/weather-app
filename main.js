@@ -6,6 +6,7 @@ const getCurrentPositionButton = document.querySelector('.current-position');
 const searchBar = document.querySelector('input');
 const searchButton = document.querySelector('.search-button');
 const weatherInfo = document.querySelector('.weather-info');
+const body = document.querySelector('body');
 
 
 
@@ -13,7 +14,6 @@ getCurrentPositionButton.addEventListener('click', () => {
     navigator.geolocation.getCurrentPosition((posetion) => {
         latitude = posetion.coords.latitude;
         longitude = posetion.coords.longitude;
-        console.log(latitude, longitude);
 
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`)
             .then(response => response.json())
@@ -22,7 +22,8 @@ getCurrentPositionButton.addEventListener('click', () => {
             <p>${data.name}</p>
             <p>${data.main.temp}℃</p>
             <p>${data.weather[0].main}</p>
-            `
+            `;
+                changeBackground(data.weather[0].main);
             })
     })
 })
@@ -55,8 +56,38 @@ searchButton.addEventListener('click', () => {
             <p>${data.temprature}℃</p>
             <p>${data.description}</p>
             `;
+            changeBackground(data.description);
+
         });
 })
 
 
-//code using async/await
+function changeBackground(weather) {
+    console.log('hello');
+    switch (weather) {
+        case 'Clouds':
+            console.log(weather);
+            body.style.backgroundImage = "url(images/clouds1.png)";
+            break;
+        case 'Rain':
+            body.style.backgroundImage = "url(images/rain1.png)";
+            console.log(weather);
+            break;
+        case 'Clear':
+            body.style.backgroundImage = "url(images/clear.png)";
+            console.log(weather);
+            break;
+        case 'Snow':
+            body.style.backgroundImage = "url(images/snow2.png)";
+            console.log(weather);
+            break;
+        case 'Thunderstorm':
+            body.style.backgroundImage = "url(images/thunder1.png)";
+            console.log(weather);
+            break;
+    }
+}
+
+body.style.backgroundImage = "url(images/forecast.png)"
+
+
